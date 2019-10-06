@@ -68,9 +68,9 @@ public class Unzip {
         if (!dataDir.exists()) {
             dataDir.mkdirs();
         } else {
-            removeRecursive(dataDir);
+            doUnzip();
         }
-        doUnzip();
+
     }
 
 
@@ -129,22 +129,5 @@ public class Unzip {
         String[] directory = last.split("\\.");
         logger.info("directory will be " + directory[0]);
         return directory[0];
-    }
-
-    /**
-     * Remove File Content from a Folder recursively
-     * @param folder - File Path
-     */
-    private void removeRecursive(File folder) {
-        File[] files = folder.listFiles();
-        if (files != null) { //some JVMs return null for empty dirs
-            for (File f : files) {
-                if (f.isDirectory()) {
-                    removeRecursive(f);
-                } else {
-                    f.delete();
-                }
-            }
-        }
     }
 }

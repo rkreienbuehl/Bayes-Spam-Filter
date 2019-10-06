@@ -23,6 +23,8 @@ public class BayesSpamFilter {
         File hamFiles = new File(BayesSpamFilter.class.getClassLoader().getResource("Programmieraufgabe1" + File.separator + "ham-anlern.zip").getFile());
         new Unzip(hamFiles.toString());
 
+        File spamFiles = new File(BayesSpamFilter.class.getClassLoader().getResource("Programmieraufgabe1" + File.separator + "spam-anlern.zip").getFile());
+        new Unzip(spamFiles.toString());
 
     }
 }
