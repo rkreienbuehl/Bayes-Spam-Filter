@@ -13,7 +13,9 @@ import java.util.zip.ZipInputStream;
 /**
  * Unzip Files from a Folder. Output will be saved to /data in System.getproperty("user.dir").
  * This is the Current destination where the Java Code is executed. See
- * <a href="https://docs.oracle.com/javase/tutorial/essential/environment/sysprop.html">Java Sysprop</a>
+ * <a href="https://docs.oracle.com/javase/tutorial/essential/environment/sysprop.html" target="_blank">Java Sysprop</a>.
+ * Source for the <a href="https://www.journaldev.com/960/java-unzip-file-example" target="_blank">doUnzip()</a>.
+ * Had to be enhanced for Spam-Filter Functions.
  */
 public class Unzip {
     private final Logger logger = LogManager.getLogger(Unzip.class);
