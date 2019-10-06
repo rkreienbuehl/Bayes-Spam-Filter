@@ -18,13 +18,39 @@ import java.util.zip.ZipInputStream;
  * Had to be enhanced for Spam-Filter Functions.
  */
 public class Unzip {
+    /**
+     * The logger
+     */
     private final Logger logger = LogManager.getLogger(Unzip.class);
 
+    /**
+     * Path to Zip File
+     */
     private String zipPath;
+
+    /**
+     * The User dir
+     */
     private String userHome;
+
+    /**
+     * Input Stream for the zipped Files
+     */
     private FileInputStream fis;
+
+    /**
+     * Buffer to extract files
+     */
     private byte[] readbuffer = new byte[1024];
+
+    /**
+     * Directory where all Data gets stored
+     */
     private File dataDir;
+
+    /**
+     * Destionation of extracted files in @dataDir
+     */
     private File destDir;
 
     public Unzip(String path) {
