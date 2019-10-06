@@ -18,6 +18,7 @@ public class BayesSpamFilter {
 
         /**
          * Load Files for test from classpath ressources
+         * TODO Maybe load files from Java Arguments on start
          */
         File hamFiles = new File(BayesSpamFilter.class.getClassLoader().getResource("Programmieraufgabe1" + File.separator + "ham-anlern.zip").getFile());
         new Unzip(hamFiles.toString());
