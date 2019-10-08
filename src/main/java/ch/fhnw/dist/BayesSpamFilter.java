@@ -1,11 +1,14 @@
 package ch.fhnw.dist;
 
-import ch.fhnw.dist.data.Word;
-import ch.fhnw.dist.unzip.Unzip;
+import ch.fhnw.dist.evaluate.Word;
+import ch.fhnw.dist.evaluate.WordProcessor;
+import ch.fhnw.dist.filter.SpamFilter;
+import ch.fhnw.dist.reader.ZipReader;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.File;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -21,11 +24,32 @@ public class BayesSpamFilter {
          * Load Files for test from classpath ressources
          * TODO Maybe load files from Java Arguments on start
          */
-        File hamFiles = new File(BayesSpamFilter.class.getClassLoader().getResource("Programmieraufgabe1" + File.separator + "ham-anlern.zip").getFile());
-        new Unzip(hamFiles.toString());
 
+        /**
+         * Read HamAnlernMails
+         */
+        File hamFiles = new File(BayesSpamFilter.class.getClassLoader().getResource("Programmieraufgabe1" + File.separator + "ham-anlern.zip").getFile());
+        ZipReader hr = new ZipReader(hamFiles.toString());
+        String[] hamMails = hr.doRead();
+
+        SpamFilter spamFilter = new SpamFilter();
+
+
+        for(String mail : hamMails){
+            spamFilter.learn(mail, SpamFilter.SpamOrHam.HAM);
+        }
+
+
+        /**
+         * Read SpamAnlernMails
+         */
         File spamFiles = new File(BayesSpamFilter.class.getClassLoader().getResource("Programmieraufgabe1" + File.separator + "spam-anlern.zip").getFile());
-        new Unzip(spamFiles.toString());
+        ZipReader sr = new ZipReader(spamFiles.toString());
+        String[] spamMails = sr.doRead();
+
+        for(String mail : spamMails){
+            spamFilter.learn(mail, SpamFilter.SpamOrHam.SPAM);
+        }
 
 
 
