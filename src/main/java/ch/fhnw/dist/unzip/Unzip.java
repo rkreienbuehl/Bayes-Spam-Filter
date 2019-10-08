@@ -56,7 +56,7 @@ public class Unzip {
     public Unzip(String path) {
         zipPath = path;
         userHome = System.getProperty("user.dir");
-        dataDir = new File(System.getProperty("user.dir") + File.separator + "data");
+        dataDir = new File(System.getProperty("user.dir") + File.separator + "spam-data");
         destDir = new File(dataDir + File.separator + getUnzipDirName());
         process();
     }
@@ -67,6 +67,7 @@ public class Unzip {
     private void process() {
         if (!dataDir.exists()) {
             dataDir.mkdirs();
+            doUnzip();
         } else {
             doUnzip();
         }
@@ -97,6 +98,7 @@ public class Unzip {
                 FileOutputStream fos = new FileOutputStream(unzipedFile);
                 int len;
                 while ((len = zis.read(readbuffer)) > 0) {
+                    //logger.debug();
                     fos.write(readbuffer, 0, len);
                 }
                 fos.close();
