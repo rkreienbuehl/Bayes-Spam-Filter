@@ -1,4 +1,4 @@
-package ch.fhnw.dist.data;
+package ch.fhnw.dist.evaluate;
 
 public class Word {
 
@@ -7,6 +7,13 @@ public class Word {
     private int spam;
     private double hamProbability;
     private double spamProbability;
+
+    public Word(int ham, int spam, double hamProbability, double spamProbability){
+        this.ham = ham;
+        this.spam = spam;
+        this.hamProbability = hamProbability;
+        this.spamProbability = spamProbability;
+    }
 
     public String getWord() {
         return word;
