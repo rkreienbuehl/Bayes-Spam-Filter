@@ -18,7 +18,7 @@ sourceSets {
 }
 
 compileJava {
-    options.encoding    = 'UTF-8'
+    options.encoding = 'UTF-8'
     sourceCompatibility = JavaVersion.VERSION_11
     targetCompatibility = JavaVersion.VERSION_11
 }
@@ -31,6 +31,14 @@ dependencies {
 test {
 }
 
+// Thanks to baeldung.com
+task buildFatJar(type: Jar) {
+    manifest {
+        attributes 'Main-Class': 'ch.fhnw.dist.BayesSpamFilter'
+    }
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+    with jar
+}
 
 
 
