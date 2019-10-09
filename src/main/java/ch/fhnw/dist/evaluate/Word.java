@@ -1,18 +1,23 @@
 package ch.fhnw.dist.evaluate;
 
+import ch.fhnw.dist.filter.SpamFilter;
+
 public class Word {
 
     private String word;
-    private int ham;
-    private int spam;
+    private int ham = 0;
+    private int spam = 0;
     private double hamProbability;
     private double spamProbability;
 
-    public Word(int ham, int spam, double hamProbability, double spamProbability){
-        this.ham = ham;
-        this.spam = spam;
-        this.hamProbability = hamProbability;
-        this.spamProbability = spamProbability;
+    public Word(String word, SpamFilter.SpamOrHam spam){
+        this.word = word;
+
+        if (spam == SpamFilter.SpamOrHam.SPAM) {
+            this.addSpam(1);
+        } else {
+            this.addHam(1);
+        }
     }
 
     public String getWord() {
@@ -34,7 +39,7 @@ public class Word {
     }
 
     public void addSpam(int count) {
-        this.ham += count;
+        this.spam += count;
         this.hamProbability = (this.ham == 0 ? 0.1 : (this.ham / ((double) this.ham + (double) this.spam)));
         this.spamProbability = this.spam / ((double) this.ham + (double) this.spam);
     }
