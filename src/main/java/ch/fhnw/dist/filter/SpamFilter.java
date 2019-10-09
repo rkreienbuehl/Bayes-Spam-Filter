@@ -41,8 +41,8 @@ public class SpamFilter {
         learnWords.forEach((key, word) -> {
             if (words.containsKey(key)) {
                 Word spamWord = words.get(key);
-                spamWord.setHam(spamWord.getHam() + word.getHam());
-                spamWord.setSpam(spamWord.getSpam() + word.getSpam());
+                spamWord.addHam(word.getHam());
+                spamWord.addSpam(word.getSpam());
             } else {
                 words.put(key, word);
             }
