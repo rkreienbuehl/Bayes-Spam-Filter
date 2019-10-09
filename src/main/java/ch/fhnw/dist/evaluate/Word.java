@@ -19,10 +19,6 @@ public class Word {
         return word;
     }
 
-    public void setWord(String word) {
-        this.word = word;
-    }
-
     public int getHam() {
         return ham;
     }
