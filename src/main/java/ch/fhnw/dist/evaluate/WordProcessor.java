@@ -48,17 +48,14 @@ public class WordProcessor {
                 }
             } else {
                 if (this.spamOrHam == SpamFilter.SpamOrHam.HAM) {
-                    Word listW = new Word(1, 0, 0.0, 0.0);
+                    Word listW = new Word(word, SpamFilter.SpamOrHam.HAM);
                     wordlist.put(word, listW);
                 } else {
-                    Word listW = new Word(0, 1, 0.0, 0.0);
+                    Word listW = new Word(word, SpamFilter.SpamOrHam.SPAM);
                     wordlist.put(word, listW);
                 }
             }
-
-
         }
-
         return wordlist;
     }
 }
