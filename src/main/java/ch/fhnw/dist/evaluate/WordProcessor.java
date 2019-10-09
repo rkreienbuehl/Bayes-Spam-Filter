@@ -42,9 +42,9 @@ public class WordProcessor {
             if (wordlist.containsKey(word)) {
                 Word fromList = wordlist.get(word);
                 if (this.spamOrHam == SpamFilter.SpamOrHam.HAM) {
-                    fromList.setHam(fromList.getHam() + 1);
+                    fromList.addHam(1);
                 } else {
-                    fromList.setSpam(fromList.getSpam() + 1);
+                    fromList.addSpam(1);
                 }
             } else {
                 if (this.spamOrHam == SpamFilter.SpamOrHam.HAM) {
