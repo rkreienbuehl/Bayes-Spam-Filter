@@ -27,31 +27,23 @@ public class Word {
         return ham;
     }
 
-    public void setHam(int ham) {
-        this.ham = ham;
+    public void addHam(int count) {
+        this.ham += count;
     }
 
     public int getSpam() {
         return spam;
     }
 
-    public void setSpam(int spam) {
-        this.spam = spam;
+    public void addSpam(int count) {
+        this.ham += count;
     }
 
     public double getHamProbability() {
         return hamProbability;
     }
 
-    public void setHamProbability(double hamProbability) {
-        this.hamProbability = hamProbability;
-    }
-
     public double getSpamProbability() {
         return spamProbability;
-    }
-
-    public void setSpamProbability(double spamProbability) {
-        this.spamProbability = spamProbability;
     }
 }
