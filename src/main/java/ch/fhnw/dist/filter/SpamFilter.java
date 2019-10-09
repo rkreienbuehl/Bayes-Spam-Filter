@@ -54,9 +54,9 @@ public class SpamFilter {
      */
     public void printWordlist() {
         logger.debug("printing Words to console");
-        logger.debug("Wordlist | Word -> SpamCount -> HamCount ");
+        logger.debug("Wordlist | Word -> SpamCount / SpamProbability -> HamCount / HamProbability ");
         words.forEach((key, word) -> {
-            logger.debug(key + " -> " + word.getSpam() + " -> " + word.getHam());
+            logger.debug(key + " -> " + word.getSpam() + " / " + word.getSpamProbability() + " -> " + word.getHam() + " / " + word.getHamProbability());
         });
         logger.debug("Spam Ham Liste contains " + words.size() + " words");
     }
