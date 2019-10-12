@@ -10,6 +10,7 @@ import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class SpamFilter {
@@ -28,7 +29,9 @@ public class SpamFilter {
     private int spamCount = 0;
     private int hamCount = 0;
 
-    private double minimumValue = 0.00001;
+    private int nanCounter = 0;
+
+    private double minimumValue = 0.1;
 
     public SpamFilter() {
     }
@@ -40,8 +43,8 @@ public class SpamFilter {
      * @param spamOrHam type of mail
      */
     public void learn(String mail, SpamOrHam spamOrHam) {
-        wp.setContent(mail, spamOrHam);
-        Map<String, Word> learnWords = wp.processContent();
+        wp.setContentWithIdentification(mail, spamOrHam);
+        Map<String, Word> learnWords = wp.processContentWithIdentification();
 
         if (SpamOrHam.SPAM == spamOrHam) {
             this.spamCount++;
@@ -58,6 +61,8 @@ public class SpamFilter {
                 words.put(key, word);
             }
         });
+
+        logger.debug("Spam Mails: " + this.spamCount + " / Ham Mails: " + this.hamCount);
     }
 
     /**
@@ -94,7 +99,10 @@ public class SpamFilter {
     }
 
     public SpamOrHam checkMail(String mail) {
-        String[] mailWords = mail.split(" ");
+
+        wp.setContent(mail);
+
+        List<String> mailWords = wp.processContent();
 
         double spamIndex = 1.0;
         double hamIndex = 1.0;
@@ -103,8 +111,12 @@ public class SpamFilter {
         for (String word : mailWords ) {
             if (words.containsKey(word)) {
                 Word w = words.get(word);
-                spamIndex = spamIndex * ((w.getSpam() != 0) ? ((double) w.getSpam() / (double) this.spamCount) : this.minimumValue);
-                hamIndex = hamIndex * ((w.getHam() != 0) ? ((double) w.getHam() / (double) this.hamCount) : this.minimumValue);
+
+                double wordSpamIndex = ((w.getSpam() != 0) ? (double) w.getSpam() : this.minimumValue) / (double) this.spamCount;
+                double wordHamIndex = ((w.getHam() != 0) ? (double) w.getHam() : this.minimumValue) / (double) this.hamCount;
+
+                spamIndex = spamIndex * wordSpamIndex;
+                hamIndex = hamIndex * wordHamIndex;
             }
         }
 
@@ -112,8 +124,20 @@ public class SpamFilter {
 
         SpamOrHam isSpam = spamProbability >= 0.5 ? SpamOrHam.SPAM : SpamOrHam.HAM;
 
-        logger.debug(" Probability of mail beeing spam: " + spamProbability + " => " + isSpam.toString());
+        if (Double.isNaN(spamProbability)) {
+            this.nanCounter++;
+            // logger.debug("Spam Index: " + spamIndex + " Ham Index: " + hamIndex);
+            // logger.debug(mail);
+        }
 
         return isSpam;
+    }
+
+    public int getNanCounter() {
+        return nanCounter;
+    }
+
+    public void resetNanCounter() {
+        this.nanCounter = 0;
     }
 }
