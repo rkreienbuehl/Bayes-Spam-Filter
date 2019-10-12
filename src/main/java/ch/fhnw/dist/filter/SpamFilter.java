@@ -25,6 +25,11 @@ public class SpamFilter {
     private Map<String, Word> words = new HashMap<>();
     private WordProcessor wp = new WordProcessor();
 
+    private int spamCount = 0;
+    private int hamCount = 0;
+
+    private double minimumValue = 0.00001;
+
     public SpamFilter() {
     }
 
@@ -37,6 +42,12 @@ public class SpamFilter {
     public void learn(String mail, SpamOrHam spamOrHam) {
         wp.setContent(mail, spamOrHam);
         Map<String, Word> learnWords = wp.processContent();
+
+        if (SpamOrHam.SPAM == spamOrHam) {
+            this.spamCount++;
+        } else {
+            this.hamCount++;
+        }
 
         learnWords.forEach((key, word) -> {
             if (words.containsKey(key)) {
@@ -56,7 +67,7 @@ public class SpamFilter {
         logger.debug("printing Words to console");
         logger.debug("Wordlist | Word -> SpamCount / SpamProbability -> HamCount / HamProbability ");
         words.forEach((key, word) -> {
-            logger.debug(key + " -> " + word.getSpam() + " / " + word.getSpamProbability() + " -> " + word.getHam() + " / " + word.getHamProbability());
+            logger.debug(key + " -> " + word.getSpam() + " -> " + word.getHam());
         });
         logger.debug("Spam Ham Liste contains " + words.size() + " words");
     }
@@ -80,5 +91,29 @@ public class SpamFilter {
         } catch (FileNotFoundException e) {
             logger.error(e.getMessage() + Arrays.toString(e.getStackTrace()));
         }
+    }
+
+    public SpamOrHam checkMail(String mail) {
+        String[] mailWords = mail.split(" ");
+
+        double spamIndex = 1.0;
+        double hamIndex = 1.0;
+
+
+        for (String word : mailWords ) {
+            if (words.containsKey(word)) {
+                Word w = words.get(word);
+                spamIndex = spamIndex * ((w.getSpam() != 0) ? ((double) w.getSpam() / (double) this.spamCount) : this.minimumValue);
+                hamIndex = hamIndex * ((w.getHam() != 0) ? ((double) w.getHam() / (double) this.hamCount) : this.minimumValue);
+            }
+        }
+
+        double spamProbability = spamIndex / (spamIndex + hamIndex);
+
+        SpamOrHam isSpam = spamProbability >= 0.5 ? SpamOrHam.SPAM : SpamOrHam.HAM;
+
+        logger.debug(" Probability of mail beeing spam: " + spamProbability + " => " + isSpam.toString());
+
+        return isSpam;
     }
 }

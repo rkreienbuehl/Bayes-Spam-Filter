@@ -14,7 +14,7 @@ public class BayesSpamFilter {
 
     private static final Logger logger = LogManager.getLogger(BayesSpamFilter.class);
     private static Map<String, Word> words = new HashMap<>();
-    private static final boolean DEBUG = true;
+    private static final boolean DEBUG = false;
 
     public static void main(String[] args) {
         logger.info("starting Bayes-Spam-Filter");
@@ -56,6 +56,45 @@ public class BayesSpamFilter {
             spamFilter.learn(mail, SpamFilter.SpamOrHam.SPAM);
         }
         logger.info("finished learning SPAM content");
+
+
+        /**
+         * Check Mails for spam
+         */
+        spamFiles = new File(BayesSpamFilter.class.getClassLoader().getResource("Programmieraufgabe1" + File.separator + "spam-test.zip").getFile());
+        sr = new ZipReader(spamFiles.toString());
+        spamMails = sr.doRead();
+
+        logger.info("Test Spam Mails");
+        int testedSpamMails = spamMails.length;
+        int wrongTestedSpamMails = 0;
+        for (String mail : spamMails) {
+            if (spamFilter.checkMail(mail) != SpamFilter.SpamOrHam.SPAM) {
+                wrongTestedSpamMails++;
+            }
+        }
+        logger.info("finished testing SPAM content");
+
+        /**
+         * Check Mails for ham
+         */
+        hamFiles = new File(BayesSpamFilter.class.getClassLoader().getResource("Programmieraufgabe1" + File.separator + "ham-test.zip").getFile());
+        hr = new ZipReader(hamFiles.toString());
+        hamMails = hr.doRead();
+
+        logger.info("Test Ham Mails");
+        int testedHamMails = hamMails.length;
+        int wrongTestedHamMails = 0;
+        for (String mail : hamMails) {
+            if (spamFilter.checkMail(mail) != SpamFilter.SpamOrHam.HAM) {
+                wrongTestedHamMails++;
+            }
+        }
+        logger.info("finished testing HAM content");
+
+        logger.info(" Checked Spam Mails: " + testedSpamMails + " => Wrong classified: " + wrongTestedSpamMails + " => Percentage of right classification: " + (int)((1.0 - (double) wrongTestedSpamMails / (double) testedSpamMails)*100) + "%");
+        logger.info(" Checked Ham Mails: " + testedHamMails + " => Wrong classified: " + wrongTestedHamMails + " => Percentage of right classification: " + (int)((1.0 - (double) wrongTestedHamMails/ (double) testedHamMails)*100) + "%");
+
 
         if (DEBUG) {
             /**
