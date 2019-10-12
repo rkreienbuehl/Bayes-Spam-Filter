@@ -35,18 +35,11 @@ public class WordProcessor {
 
         Map<String, Word> wordlist = new HashMap<>();
 
-        String[] splittedContent = this.content.split(" ");
+        String[] splittedContent = this.content.toLowerCase().split(" ");
 
         for (String word : splittedContent) {
 
-            if (wordlist.containsKey(word)) {
-                Word fromList = wordlist.get(word);
-                if (this.spamOrHam == SpamFilter.SpamOrHam.HAM) {
-                    fromList.addHam(1);
-                } else {
-                    fromList.addSpam(1);
-                }
-            } else {
+            if (!wordlist.containsKey(word)) {
                 if (this.spamOrHam == SpamFilter.SpamOrHam.HAM) {
                     Word listW = new Word(word, SpamFilter.SpamOrHam.HAM);
                     wordlist.put(word, listW);
