@@ -74,6 +74,9 @@ public class BayesSpamFilter {
             }
         }
         logger.info("finished testing SPAM content");
+        logger.error("NaNCounter: " + spamFilter.getNanCounter());
+
+        spamFilter.resetNanCounter();
 
         /**
          * Check Mails for ham
@@ -91,6 +94,10 @@ public class BayesSpamFilter {
             }
         }
         logger.info("finished testing HAM content");
+
+        logger.error("NaNCounter: " + spamFilter.getNanCounter());
+
+        spamFilter.resetNanCounter();
 
         logger.info(" Checked Spam Mails: " + testedSpamMails + " => Wrong classified: " + wrongTestedSpamMails + " => Percentage of right classification: " + (int)((1.0 - (double) wrongTestedSpamMails / (double) testedSpamMails)*100) + "%");
         logger.info(" Checked Ham Mails: " + testedHamMails + " => Wrong classified: " + wrongTestedHamMails + " => Percentage of right classification: " + (int)((1.0 - (double) wrongTestedHamMails/ (double) testedHamMails)*100) + "%");
