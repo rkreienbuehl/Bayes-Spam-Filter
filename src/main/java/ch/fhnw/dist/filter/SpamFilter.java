@@ -8,6 +8,8 @@ import org.apache.logging.log4j.Logger;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -29,9 +31,7 @@ public class SpamFilter {
     private int spamCount = 0;
     private int hamCount = 0;
 
-    private int nanCounter = 0;
-
-    private double minimumValue = 0.1;
+    private double minimumValue = 0.0001;
 
     public SpamFilter() {
     }
@@ -61,8 +61,6 @@ public class SpamFilter {
                 words.put(key, word);
             }
         });
-
-        logger.debug("Spam Mails: " + this.spamCount + " / Ham Mails: " + this.hamCount);
     }
 
     /**
@@ -104,8 +102,8 @@ public class SpamFilter {
 
         List<String> mailWords = wp.processContent();
 
-        double spamIndex = 1.0;
-        double hamIndex = 1.0;
+        BigDecimal spamIndex = new BigDecimal(1.0);
+        BigDecimal hamIndex = new BigDecimal(1.0);
 
 
         for (String word : mailWords ) {
@@ -115,29 +113,15 @@ public class SpamFilter {
                 double wordSpamIndex = ((w.getSpam() != 0) ? (double) w.getSpam() : this.minimumValue) / (double) this.spamCount;
                 double wordHamIndex = ((w.getHam() != 0) ? (double) w.getHam() : this.minimumValue) / (double) this.hamCount;
 
-                spamIndex = spamIndex * wordSpamIndex;
-                hamIndex = hamIndex * wordHamIndex;
+                spamIndex = spamIndex.multiply(new BigDecimal(wordSpamIndex));
+                hamIndex = hamIndex.multiply(new BigDecimal(wordHamIndex));
             }
         }
 
-        double spamProbability = spamIndex / (spamIndex + hamIndex);
+        BigDecimal spamProbability = spamIndex.divide(spamIndex.add(hamIndex), 2, RoundingMode.HALF_UP);
 
-        SpamOrHam isSpam = spamProbability >= 0.5 ? SpamOrHam.SPAM : SpamOrHam.HAM;
-
-        if (Double.isNaN(spamProbability)) {
-            this.nanCounter++;
-            // logger.debug("Spam Index: " + spamIndex + " Ham Index: " + hamIndex);
-            // logger.debug(mail);
-        }
+        SpamOrHam isSpam = spamProbability.compareTo(new BigDecimal(0.5)) >= 0 ? SpamOrHam.SPAM : SpamOrHam.HAM;
 
         return isSpam;
-    }
-
-    public int getNanCounter() {
-        return nanCounter;
-    }
-
-    public void resetNanCounter() {
-        this.nanCounter = 0;
     }
 }
