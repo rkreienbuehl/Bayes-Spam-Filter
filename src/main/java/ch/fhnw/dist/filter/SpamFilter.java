@@ -33,6 +33,11 @@ public class SpamFilter {
 
     private double minimumValue = 0.0001;
 
+    /**
+     * Threshold for Spam Detection.
+     */
+    private final BigDecimal THRESHOLD = new BigDecimal(0.5);
+
     public SpamFilter() {
     }
 
@@ -96,6 +101,12 @@ public class SpamFilter {
         }
     }
 
+
+    /**
+     * Do a Spam classification for each mail in the given set
+     * @param mail the mail content
+     * @return classification of mail type SPAM or HAM
+     */
     public SpamOrHam checkMail(String mail) {
 
         wp.setContent(mail);
@@ -106,7 +117,7 @@ public class SpamFilter {
         BigDecimal hamIndex = new BigDecimal(1.0);
 
 
-        for (String word : mailWords ) {
+        for (String word : mailWords) {
             if (words.containsKey(word)) {
                 Word w = words.get(word);
 
@@ -120,7 +131,7 @@ public class SpamFilter {
 
         BigDecimal spamProbability = spamIndex.divide(spamIndex.add(hamIndex), 2, RoundingMode.DOWN);
 
-        SpamOrHam isSpam = spamProbability.compareTo(new BigDecimal(0.5)) >= 0 ? SpamOrHam.SPAM : SpamOrHam.HAM;
+        SpamOrHam isSpam = spamProbability.compareTo(THRESHOLD) >= 0 ? SpamOrHam.SPAM : SpamOrHam.HAM;
 
         return isSpam;
     }
