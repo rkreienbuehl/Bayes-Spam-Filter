@@ -33,7 +33,7 @@ public class BayesSpamFilter {
         /**
          * Learn all Ham Mails
          */
-        File hamFiles = new File(BayesSpamFilter.class.getClassLoader().getResource("Programmieraufgabe1" + File.separator + "ham-anlern.zip").getFile());
+        File hamFiles = new File(BayesSpamFilter.class.getClassLoader().getResource("Programmieraufgabe1/ham-anlern.zip").getFile());
         ZipReader hr = new ZipReader(hamFiles.toString());
         String[] hamMails = hr.doRead();
 
@@ -47,7 +47,7 @@ public class BayesSpamFilter {
         /**
          * Learn all Spam Mails
          */
-        File spamFiles = new File(BayesSpamFilter.class.getClassLoader().getResource("Programmieraufgabe1" + File.separator + "spam-anlern.zip").getFile());
+        File spamFiles = new File(BayesSpamFilter.class.getClassLoader().getResource("Programmieraufgabe1/spam-anlern.zip").getFile());
         ZipReader sr = new ZipReader(spamFiles.toString());
         String[] spamMails = sr.doRead();
 
@@ -61,7 +61,7 @@ public class BayesSpamFilter {
         /**
          * Check Mails for spam
          */
-        spamFiles = new File(BayesSpamFilter.class.getClassLoader().getResource("Programmieraufgabe1" + File.separator + "spam-test.zip").getFile());
+        spamFiles = new File(BayesSpamFilter.class.getClassLoader().getResource("Programmieraufgabe1/spam-test.zip").getFile());
         sr = new ZipReader(spamFiles.toString());
         spamMails = sr.doRead();
 
@@ -79,7 +79,7 @@ public class BayesSpamFilter {
         /**
          * Check Mails for ham
          */
-        hamFiles = new File(BayesSpamFilter.class.getClassLoader().getResource("Programmieraufgabe1" + File.separator + "ham-test.zip").getFile());
+        hamFiles = new File(BayesSpamFilter.class.getClassLoader().getResource("Programmieraufgabe1/ham-test.zip").getFile());
         hr = new ZipReader(hamFiles.toString());
         hamMails = hr.doRead();
 
