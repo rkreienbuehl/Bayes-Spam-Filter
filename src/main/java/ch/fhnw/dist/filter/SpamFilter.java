@@ -118,7 +118,7 @@ public class SpamFilter {
             }
         }
 
-        BigDecimal spamProbability = spamIndex.divide(spamIndex.add(hamIndex), 2, RoundingMode.HALF_UP);
+        BigDecimal spamProbability = spamIndex.divide(spamIndex.add(hamIndex), 2, RoundingMode.DOWN);
 
         SpamOrHam isSpam = spamProbability.compareTo(new BigDecimal(0.5)) >= 0 ? SpamOrHam.SPAM : SpamOrHam.HAM;
 
