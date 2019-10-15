@@ -1,6 +1,5 @@
 package ch.fhnw.dist;
 
-import ch.fhnw.dist.evaluate.Word;
 import ch.fhnw.dist.filter.SpamFilter;
 import ch.fhnw.dist.reader.ZipReader;
 import org.apache.logging.log4j.LogManager;
@@ -8,13 +7,20 @@ import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.text.DecimalFormat;
-import java.util.HashMap;
-import java.util.Map;
 
+/**
+ * Naive Bayes SpamFilter implementation
+ */
 public class BayesSpamFilter {
 
+    /**
+     * Class logger
+     */
     private static final Logger logger = LogManager.getLogger(BayesSpamFilter.class);
-    private static Map<String, Word> words = new HashMap<>();
+
+    /**
+     * Switch for Debug Printing Messages, Attention: When enabled execution of code is slowed down because of printing to stdout
+     */
     private static final boolean DEBUG = false;
 
     public static void main(String[] args) {

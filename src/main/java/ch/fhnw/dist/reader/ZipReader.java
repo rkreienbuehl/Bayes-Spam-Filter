@@ -49,7 +49,7 @@ public class ZipReader {
 
 
     /**
-     * Unzip the folder and add all files to /data directory in user.dir
+     * Read alll Data from Zip Folder and add contents of mails to String Array
      */
     public String[] doRead() {
         String filename = fileNameFromZipPath(zipPath);

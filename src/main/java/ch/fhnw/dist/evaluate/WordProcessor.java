@@ -10,11 +10,24 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * The Wordprocessor receives the Content of a Mail an split the content into Words. Each word is then put into a List.
+ */
 public class WordProcessor {
 
+    /**
+     * Class Logger
+     */
     private Logger logger = LogManager.getLogger(WordProcessor.class);
 
+    /**
+     * The Content of a Mail
+     */
     private String content;
+
+    /**
+     * Type of Content (is determined from which folder it was read)
+     */
     private SpamFilter.SpamOrHam spamOrHam;
 
 
@@ -64,7 +77,10 @@ public class WordProcessor {
         return wordlist;
     }
 
-
+    /**
+     * Split the content and returns a List of words.
+     * @return List of Words
+     */
     public List<String> processContent() {
         List<String> wordlist = new LinkedList<>();
 
