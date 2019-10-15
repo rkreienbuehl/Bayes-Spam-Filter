@@ -58,6 +58,47 @@ public class BayesSpamFilter {
         logger.info("finished learning SPAM content");
 
 
+
+        /**
+        * Test with kallibrate SPAM
+        */
+        spamFiles = new File(BayesSpamFilter.class.getClassLoader().getResource("Programmieraufgabe1/spam-kallibrierung.zip").getFile());
+        sr = new ZipReader(spamFiles.toString());
+        spamMails = sr.doRead();
+
+        logger.info("Test Kallibrate SPAM Mails");
+        int testedCalSpam = spamMails.length;
+        int wrongTestedCalSpam = 0;
+        for (String mail : spamMails) {
+            if (spamFilter.checkMail(mail) != SpamFilter.SpamOrHam.SPAM) {
+                wrongTestedCalSpam++;
+            }
+        }
+        logger.info("finished testing SPAM content");
+
+        /**
+         * Test with kallibrate HAM
+         */
+        hamFiles = new File(BayesSpamFilter.class.getClassLoader().getResource("Programmieraufgabe1/ham-kallibrierung.zip").getFile());
+        sr = new ZipReader(hamFiles.toString());
+        hamMails = sr.doRead();
+
+        logger.info("Test Kallibrate HAM Mails");
+        int testedCalHam = hamMails.length;
+        int wrongTestedCalHam = 0;
+        for (String mail : hamMails){
+            if (spamFilter.checkMail(mail) != SpamFilter.SpamOrHam.HAM) {
+                wrongTestedCalHam++;
+            }
+        }
+        logger.info("finished testing HAM content");
+
+        logger.info(" Checked Kallibrate SPAM Mails: " + testedCalSpam + " => Wrong classified: " + wrongTestedCalSpam + " => Percentage of right classification: " + (int)((1.0 - (double) wrongTestedCalSpam / (double) testedCalSpam)*100) + "%");
+        logger.info(" Checked Kallibrate Ham Mails: " + testedCalHam + " => Wrong classified: " + wrongTestedCalHam + " => Percentage of right classification: " + (int)((1.0 - (double) wrongTestedCalHam/ (double) testedCalHam)*100) + "%");
+
+
+
+
         /**
          * Check Mails for spam
          */
