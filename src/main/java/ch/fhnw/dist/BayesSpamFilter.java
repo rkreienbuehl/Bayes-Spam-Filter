@@ -26,10 +26,6 @@ public class BayesSpamFilter {
          */
         SpamFilter spamFilter = new SpamFilter();
 
-        /**
-         * Load Files for test from classpath ressources
-         * TODO Maybe load files from Java Arguments on start
-         */
 
         /**
          * Learn all Ham Mails
