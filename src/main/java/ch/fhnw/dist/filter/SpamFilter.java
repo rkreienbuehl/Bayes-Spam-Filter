@@ -36,7 +36,24 @@ public class SpamFilter {
     /**
      * Threshold for Spam Detection.
      */
-    private final BigDecimal THRESHOLD = new BigDecimal(0.5);
+    private final BigDecimal THRESHOLD = new BigDecimal(0.8);
+    private double globalSpamProbability = 0.5;
+
+    public double getMinimumValue() {
+        return minimumValue;
+    }
+
+    public double getTHRESHOLD() {
+        return THRESHOLD.doubleValue();
+    }
+
+    public double getGlobalSpamProbability() {
+        return globalSpamProbability;
+    }
+
+    public void setGlobalSpamProbability(double globalSpamProbability) {
+        this.globalSpamProbability = globalSpamProbability;
+    }
 
     public SpamFilter() {
     }
@@ -115,6 +132,9 @@ public class SpamFilter {
 
         BigDecimal spamIndex = new BigDecimal(1.0);
         BigDecimal hamIndex = new BigDecimal(1.0);
+        BigDecimal globalSpamProbability = new BigDecimal(this.globalSpamProbability);
+        BigDecimal globalHamProbability = new BigDecimal(1 - this.globalSpamProbability);
+
 
 
         for (String word : mailWords) {
@@ -129,7 +149,7 @@ public class SpamFilter {
             }
         }
 
-        BigDecimal spamProbability = spamIndex.divide(spamIndex.add(hamIndex), 2, RoundingMode.DOWN);
+        BigDecimal spamProbability = spamIndex.multiply(globalSpamProbability).divide(spamIndex.multiply(globalSpamProbability).add(hamIndex.multiply(globalHamProbability)), 2, RoundingMode.DOWN);
 
         SpamOrHam isSpam = spamProbability.compareTo(THRESHOLD) >= 0 ? SpamOrHam.SPAM : SpamOrHam.HAM;
 
