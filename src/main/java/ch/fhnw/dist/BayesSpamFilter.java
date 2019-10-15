@@ -7,7 +7,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.File;
-import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.Map;
@@ -60,10 +59,9 @@ public class BayesSpamFilter {
         logger.info("finished learning SPAM content");
 
 
-
         /**
-        *  Insert calibrate SPAM
-        */
+         *  Insert calibrate SPAM
+         */
         logger.info("calibrate global spam probability");
 
         spamFiles = new File(BayesSpamFilter.class.getClassLoader().getResource("Programmieraufgabe1/spam-kallibrierung.zip").getFile());
@@ -120,11 +118,13 @@ public class BayesSpamFilter {
 
         logger.info("finished testing HAM content");
 
-        logger.info("P(S) is: " + df.format(spamFilter.getGlobalSpamProbability()) + ", P(H) is: " + df.format((1-spamFilter.getGlobalSpamProbability())) + ", Threshold is: " + df.format(spamFilter.getTHRESHOLD()) + " and value minimum is: " + df.format(spamFilter.getMinimumValue()));
-        logger.info(" Checked Spam Mails: " + testedSpamMails + " => Wrong classified: " + wrongTestedSpamMails + " => Percentage of right classification: " + (int)((1.0 - (double) wrongTestedSpamMails / (double) testedSpamMails)*100) + "%");
-        logger.info(" Checked Ham Mails: " + testedHamMails + " => Wrong classified: " + wrongTestedHamMails + " => Percentage of right classification: " + (int)((1.0 - (double) wrongTestedHamMails/ (double) testedHamMails)*100) + "%");
 
-
+        logger.info("======================================================================================================");
+        logger.info("| Result of Spam Classification:  ");
+        logger.info("|  P(S) is: " + df.format(spamFilter.getGlobalSpamProbability()) + ", P(H) is: " + df.format((1 - spamFilter.getGlobalSpamProbability())) + ", Threshold is: " + df.format(spamFilter.getTHRESHOLD()) + " and value minimum is: " + df.format(spamFilter.getMinimumValue()));
+        logger.info("|  Checked Spam Mails: " + testedSpamMails + " => Wrong classified: " + wrongTestedSpamMails + " => Percentage of right classification: " + (int) ((1.0 - (double) wrongTestedSpamMails / (double) testedSpamMails) * 100) + "%");
+        logger.info("|  Checked Ham Mails: " + testedHamMails + " => Wrong classified: " + wrongTestedHamMails + " => Percentage of right classification: " + (int) ((1.0 - (double) wrongTestedHamMails / (double) testedHamMails) * 100) + "%");
+        logger.info("======================================================================================================");
 
         if (DEBUG) {
             /**
